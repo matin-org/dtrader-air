@@ -32,6 +32,14 @@ function App() {
     );
   }
 
+  const ws = new WebSocket(
+    `wss://ws.binaryws.com/websockets/v3?app_id=${APP_ID}`
+  );
+
+  ws.onopen = function (evt) {
+    ws.send(JSON.stringify({ authorize: token }));
+  };
+
   return (
     <div className="App">
       {token}-{APP_ID}
