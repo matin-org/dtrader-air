@@ -35,6 +35,20 @@ const Trade = () => {
     }
   }, []);
 
+  const onLogout = () => {
+    console.log('logout', 9);
+    send(
+      {
+        logout: 1,
+      },
+      (response) => {
+        if (response.logout) {
+          window.location.reload()
+        }
+      }
+    );
+  }
+
   if (is_loading) {
     return <></>;
   }
@@ -46,6 +60,13 @@ const Trade = () => {
           <div>Welcome! {client.name || client.email}</div>
           <br />
           <div>Your balance is {`${client.balance} ${client.currency}`}</div>
+          <br/>
+          <button
+            className="btn primary"
+            onClick={onLogout}
+          >
+            Log out
+          </button>
         </div>
       ) : (
         <div>
