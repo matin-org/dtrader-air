@@ -68,7 +68,7 @@ body {
     padding-left: 20px;
     position: relative;
     height: calc(100% - 30px);
-    width: calc(100% - 50px);
+    width: calc(100% - 20px);
     overflow: hidden;
 }
 
@@ -138,6 +138,7 @@ body {
     &.open {
         overflow: visible;
         height: 250px;
+        margin-left: 20px;
 
         .toggle-btn {
             transform: rotate(180deg);
