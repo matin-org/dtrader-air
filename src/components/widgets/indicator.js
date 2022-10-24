@@ -19,8 +19,7 @@ const Indicator = ({ price, prices, instrument }) => {
     if (!instrument.exchange_is_open) {
       return "Market Closed";
     }
-
-    return instrument.symbol;
+    return instrument.display_name;
   };
 
   return (
