@@ -41,7 +41,7 @@ const Trade = () => {
   return (
     <section className="common-container trade-container">
       {is_logged_in ? (
-        <>Welcome! {client.name}</>
+        <>Welcome! {client.name || client.email}</>
       ) : (
         <div>
           <button

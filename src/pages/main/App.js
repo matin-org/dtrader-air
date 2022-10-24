@@ -4,7 +4,7 @@ import { Header, Trade, Options } from "components/layout";
 const App = () => {
   return (
     <section className="app">
-      <Header />
+      {/* <Header /> */}
       <section className="body-container">
         <Options />
         <Trade />
