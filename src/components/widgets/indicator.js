@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
+import { MAX_PRICES_LENGTH, MAX_TICKS_HISTORY } from "helpers";
 
-const Indicator = ({ price, prices }) => {
+const Indicator = ({ price, prices, instrument }) => {
   const [current_price, setPrice] = useState(price);
   const [current_prices, setPrices] = useState(prices);
   const price_ref = useRef();
@@ -10,11 +11,24 @@ const Indicator = ({ price, prices }) => {
     setPrices(prices);
   }, [price, prices]);
 
+  const getInstrumentLabel = () => {
+    if (!instrument) {
+      return "No Market";
+    }
+
+    if (!instrument.exchange_is_open) {
+      return "Market Closed";
+    }
+
+    return instrument.symbol;
+  };
+
   return (
     <div className="indicator-widget">
       <div className="graph-box">
         {current_prices.map((p, pk) => {
-          const multiplier = 1;
+          const multiplier = 2;
+
           const pos = pk * multiplier;
 
           if (current_price === p && price_ref.current) {
@@ -39,6 +53,13 @@ const Indicator = ({ price, prices }) => {
             {current_price}
           </div>
         )}
+      </div>
+      <div
+        className={`market-status-box ${
+          !instrument?.exchange_is_open ? "closed" : ""
+        }`}
+      >
+        {getInstrumentLabel()}
       </div>
     </div>
   );

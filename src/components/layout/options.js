@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useDtraderAirWS } from "store";
+import React, { useEffect, useState, useRef } from "react";
+import { useDtraderAirWS, DtraderAirStore } from "store";
 import { Dropdown, Indicator, Loader } from "components/widgets";
+import { MAX_PRICES_LENGTH, MAX_TICKS_HISTORY } from "helpers";
 
 const Options = () => {
+  const { send } = useDtraderAirWS();
+  const { useMarket, useSubMarket, useInstrument } =
+    React.useContext(DtraderAirStore);
+
   const [is_loading, setLoading] = useState(true);
+  const [is_open, setOpen] = useState(true);
   const [markets, setMarkets] = useState({});
   const [symbol, setSymbol] = useState(null);
-  const [selected_market, setSelectedMarket] = useState(null);
-  const [selected_submarket, setSelectedSubMarket] = useState(null);
-  const [selected_instruments, setSelectedInstruments] = useState(null);
+  const [market, setMarket] = useMarket;
+  const [submarket, setSubMarket] = useSubMarket;
+  const [instrument, setInstrument] = useInstrument;
   const [price, setPrice] = useState(null);
-  const [prices, setPrices] = useState([]);
   const [subscription, setSubscription] = useState(null);
-
-  const { send } = useDtraderAirWS();
+  let prices = useRef([]);
 
   useEffect(() => {
     send(
@@ -98,15 +102,15 @@ const Options = () => {
         {
           ticks_history: symbol,
           adjust_start_time: 1,
-          count: 99,
+          count: MAX_TICKS_HISTORY,
           end: "latest",
           start: 1,
           style: "ticks",
         },
         (response) => {
           if (response.history) {
-            const { prices } = response.history;
-            setPrices(prices);
+            const { prices: current_prices } = response.history;
+            prices.current = current_prices;
           }
         }
       );
@@ -114,18 +118,16 @@ const Options = () => {
   }, [symbol]);
 
   useEffect(() => {
-    const new_prices = [...prices];
+    if (prices.current.length) {
+      prices.current.push(price);
 
-    if (new_prices.length) {
-      new_prices.push(price);
-
-      new_prices.shift();
-
-      new_prices.sort(function (a, b) {
+      prices.current.sort(function (a, b) {
         return b - a;
       });
 
-      setPrices(new_prices);
+      if (prices.current.length > MAX_PRICES_LENGTH) {
+        prices.current.length = MAX_TICKS_HISTORY;
+      }
     }
   }, [price]);
 
@@ -148,8 +150,8 @@ const Options = () => {
   const getSubMarketOptions = () => {
     const submarket_options = [];
 
-    if (selected_market) {
-      const subs = markets[selected_market.value].submarkets;
+    if (market) {
+      const subs = markets[market.value].submarkets;
 
       Object.keys(subs).forEach((k) => {
         const submarket = subs[k];
@@ -169,10 +171,9 @@ const Options = () => {
   const getIntrumentOptions = () => {
     const instrument_options = [];
 
-    if (selected_market && selected_submarket) {
+    if (market && submarket) {
       const instruments =
-        markets[selected_market.value].submarkets[selected_submarket.value]
-          .instruments;
+        markets[market.value].submarkets[submarket.value].instruments;
 
       Object.keys(instruments).forEach((k) => {
         const instrument = instruments[k];
@@ -189,50 +190,70 @@ const Options = () => {
     return instrument_options;
   };
 
+  const getMarketData = () => {
+    if (market && submarket && instrument) {
+      return markets[market.value].submarkets[submarket.value].instruments.find(
+        ({ symbol }) => symbol === instrument.value
+      );
+    }
+
+    return null;
+  };
+
   if (is_loading) {
     return (
       <section className="common-container loading-container">
         <Loader />
-        <Indicator price={price} prices={prices} />
+        <Indicator price={price} prices={prices.current} />
       </section>
     );
   }
   return (
-    <section className="common-container options-container">
+    <section
+      className={`common-container options-container ${is_open ? "open" : ""}`}
+    >
       <Dropdown
         options={getMarketOptions()}
         label="Markets"
-        value={selected_market}
+        value={market}
         onChange={(e) => {
-          setSelectedMarket(e);
-          setSelectedSubMarket(null);
+          setMarket(e);
+          setSubMarket(null);
         }}
       />
-      {selected_market && (
+      {market && (
         <Dropdown
           options={getSubMarketOptions()}
           label="Sub Market"
-          value={selected_submarket}
+          value={submarket}
           onChange={(e) => {
-            setSelectedSubMarket(e);
-            setSelectedInstruments(null);
+            setSubMarket(e);
+            setInstrument(null);
           }}
         />
       )}
-      {selected_submarket && (
+      {submarket && (
         <Dropdown
           options={getIntrumentOptions()}
           label="Intruments"
-          value={selected_instruments}
+          value={instrument}
           onChange={(e) => {
-            setSelectedInstruments(e);
+            setInstrument(e);
             setSymbol(e.value);
-            setPrices([]);
             setPrice(null);
+            prices = [];
           }}
         />
       )}
-      <Indicator price={price} prices={prices} />
+      <Indicator
+        price={price}
+        prices={prices.current}
+        instrument={getMarketData()}
+      />
+      <span className="toggle-btn" onClick={() => setOpen((e) => !e)}></span>
+      <div className="option-banner">
+        {instrument?.label || "Choose Market"}
+      </div>
     </section>
   );
 };

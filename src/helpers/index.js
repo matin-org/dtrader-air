@@ -1,4 +1,12 @@
-import { APP_ID, TOKEN_KEY, DEFAULT_LOCAL_URL, LOGIN_POPUP } from "./contants";
+import {
+  APP_ID,
+  TOKEN_KEY,
+  DEFAULT_LOCAL_URL,
+  LOGIN_POPUP,
+  MAX_PRICES_LENGTH,
+  MAX_TICKS_HISTORY,
+  LOCAL_DATA,
+} from "./contants";
 import {
   isBrowser,
   isLocal,
@@ -11,6 +19,9 @@ export {
   TOKEN_KEY,
   DEFAULT_LOCAL_URL,
   LOGIN_POPUP,
+  MAX_PRICES_LENGTH,
+  MAX_TICKS_HISTORY,
+  LOCAL_DATA,
   isBrowser,
   isLocal,
   popupCenter,

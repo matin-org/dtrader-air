@@ -45,6 +45,7 @@ const Trade = () => {
       ) : (
         <div>
           <button
+            className="btn primary"
             onClick={() =>
               popupCenter({
                 url: `https://oauth.deriv.com/oauth2/authorize?app_id=${APP_ID}&l=en&brand=light-trader`,
