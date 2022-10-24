@@ -10,6 +10,7 @@ const Trade = () => {
     name: "",
     balance: 0,
     currency: "",
+    email:''
   });
 
   const { send } = useDtraderAirWS();
@@ -22,9 +23,9 @@ const Trade = () => {
         },
         (response) => {
           if (response.authorize) {
-            const { fullname } = response.authorize;
+            const { fullname, balance, currency, email } = response.authorize;
 
-            setClient({ ...client, name: fullname });
+            setClient({ name: fullname, balance, currency, email });
             setLoading(false);
           }
         }
@@ -41,7 +42,11 @@ const Trade = () => {
   return (
     <section className="common-container trade-container">
       {is_logged_in ? (
-        <>Welcome! {client.name || client.email}</>
+        <div className="client-profile">
+          <div>Welcome! {client.name || client.email}</div>
+          <br />
+          <div>Your balance is {`${client.balance} ${client.currency}`}</div>
+        </div>
       ) : (
         <div>
           <button
