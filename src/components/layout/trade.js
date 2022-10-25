@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { APP_ID, popupCenter, LOGIN_POPUP } from "helpers";
+import { APP_ID, popupCenter, LOGIN_POPUP, isMobile } from "helpers";
 import { useCheckLogin } from "components/hooks";
 import { useDtraderAirWS } from "store";
 
@@ -10,7 +10,7 @@ const Trade = () => {
     name: "",
     balance: 0,
     currency: "",
-    email:''
+    email: "",
   });
 
   const { send } = useDtraderAirWS();
