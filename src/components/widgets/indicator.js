@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MAX_PRICES_LENGTH, MAX_TICKS_HISTORY } from "helpers";
 
 const Indicator = ({ price, prices, instrument }) => {
   const [current_price, setPrice] = useState(price);

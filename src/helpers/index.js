@@ -7,12 +7,7 @@ import {
   MAX_TICKS_HISTORY,
   LOCAL_DATA,
 } from "./contants";
-import {
-  isBrowser,
-  isLocal,
-  popupCenter,
-  ArrRemoveItemByValue,
-} from "./utilities";
+import { isBrowser, isLocal, popupCenter, isMobile } from "./utilities";
 
 export {
   APP_ID,
@@ -25,5 +20,5 @@ export {
   isBrowser,
   isLocal,
   popupCenter,
-  ArrRemoveItemByValue,
+  isMobile,
 };
