@@ -9,6 +9,9 @@ export const DtraderAirProvider = ({ children }) => {
   const [market, setMarket] = useState(null);
   const [submarket, setSubMarket] = useState(null);
   const [instrument, setInstrument] = useState(null);
+  const [accounts, setAccounts] = useState([]);
+  const [symbol, setSymbol] = useState(null);
+  const [is_options_open, setOptionsOpen] = useState(true);
 
   return (
     <DtraderAirStore.Provider
@@ -17,6 +20,9 @@ export const DtraderAirProvider = ({ children }) => {
         useMarket: [market, setMarket],
         useSubMarket: [submarket, setSubMarket],
         useInstrument: [instrument, setInstrument],
+        useAccounts: [accounts, setAccounts],
+        useSymbol: [symbol, setSymbol],
+        useToggleOptions: [is_options_open, setOptionsOpen],
       }}
     >
       {children}
