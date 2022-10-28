@@ -5,13 +5,18 @@ import { MAX_PRICES_LENGTH, MAX_TICKS_HISTORY } from "helpers";
 
 const Options = () => {
   const { send } = useDtraderAirWS();
-  const { useMarket, useSubMarket, useInstrument } =
-    React.useContext(DtraderAirStore);
+  const {
+    useMarket,
+    useSubMarket,
+    useInstrument,
+    useSymbol,
+    useToggleOptions,
+  } = React.useContext(DtraderAirStore);
 
   const [is_loading, setLoading] = useState(true);
-  const [is_open, setOpen] = useState(true);
+  const [is_options_open, setOptionsOpen] = useToggleOptions;
   const [markets, setMarkets] = useState({});
-  const [symbol, setSymbol] = useState(null);
+  const [symbol, setSymbol] = useSymbol;
   const [market, setMarket] = useMarket;
   const [submarket, setSubMarket] = useSubMarket;
   const [instrument, setInstrument] = useInstrument;
@@ -210,7 +215,9 @@ const Options = () => {
   }
   return (
     <section
-      className={`common-container options-container ${is_open ? "open" : ""}`}
+      className={`common-container options-container ${
+        is_options_open ? "open" : ""
+      }`}
     >
       <Dropdown
         options={getMarketOptions()}
@@ -250,7 +257,10 @@ const Options = () => {
         prices={prices.current}
         instrument={getMarketData()}
       />
-      <span className="toggle-btn" onClick={() => setOpen((e) => !e)}></span>
+      <span
+        className="toggle-btn"
+        onClick={() => setOptionsOpen((e) => !e)}
+      ></span>
       <div className="option-banner">
         {instrument?.label || "Choose Market"}
       </div>
