@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 
-const Dropdown = ({ label = "", value = "", options = [], onChange }) => {
+const Dropdown = ({
+  label = "",
+  value = "",
+  options = [],
+  onChange,
+  className,
+}) => {
   const [current_value, setValue] = useState(value);
   const [current_options, setOptions] = useState(options);
 
@@ -11,7 +17,7 @@ const Dropdown = ({ label = "", value = "", options = [], onChange }) => {
   }, [value, options]);
 
   return (
-    <div className="dropdown-widget">
+    <div className={`dropdown-widget ${className}`}>
       <label>{label}</label>
       <Select
         options={current_options}
