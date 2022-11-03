@@ -220,6 +220,7 @@ const Options = () => {
       }`}
     >
       <Dropdown
+        className="push-bot"
         options={getMarketOptions()}
         label="Markets"
         value={market}
@@ -230,6 +231,7 @@ const Options = () => {
       />
       {market && (
         <Dropdown
+          className="push-bot"
           options={getSubMarketOptions()}
           label="Sub Market"
           value={submarket}
@@ -241,6 +243,7 @@ const Options = () => {
       )}
       {submarket && (
         <Dropdown
+          className="push-bot"
           options={getIntrumentOptions()}
           label="Intruments"
           value={instrument}

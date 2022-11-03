@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { APP_ID, popupCenter, LOGIN_POPUP, isMobile } from "helpers";
+import { APP_ID, popupCenter, LOGIN_POPUP, isMobile, isBrowser } from "helpers";
 import { useCheckLogin } from "components/hooks";
 import { useDtraderAirWS, DtraderAirStore } from "store";
-import { Dropdown } from "components/widgets";
+import { TradeTypes, Duration, Stake } from "components/widgets";
+
 
 const Trade = () => {
   const { is_logged_in, token } = useCheckLogin();
@@ -17,11 +18,8 @@ const Trade = () => {
   const [contracts, setContracts] = useState([]);
 
   const { send } = useDtraderAirWS();
-  const { useAccounts, useSymbol, useToggleOptions } =
-    React.useContext(DtraderAirStore);
+  const { useAccounts } = React.useContext(DtraderAirStore);
   const [, setAccounts] = useAccounts;
-  const [symbol] = useSymbol;
-  const [, setOptionsOpen] = useToggleOptions;
 
   useEffect(() => {
     if (is_logged_in && token) {
@@ -73,42 +71,39 @@ const Trade = () => {
     return <></>;
   }
 
+  const handleLogin = () => {
+    const login_url = `https://oauth.deriv.com/oauth2/authorize?app_id=${APP_ID}&l=en&brand=light-trader`;
+
+    if (isMobile()) {
+      if (isBrowser()) {
+        window.location = login_url;
+      }
+    } else {
+      popupCenter({
+        url: login_url,
+        title: LOGIN_POPUP,
+        w: 900,
+        h: 500,
+      });
+    }
+  };
+
   return (
     <section className="common-container trade-container">
       {is_logged_in ? (
         <>
-          <Dropdown
-            options={contracts.map((e) => {
-              return {
-                label: e,
-                value: e,
-              };
-            })}
-            label="Available Trade Types"
-            value={null}
-            onChange={(e) => {
-              setOptionsOpen(false);
-            }}
-          />
-          <div className="client-profile">
+          <TradeTypes />
+          <Duration />
+          <Stake />
+          {/* <div className="client-profile">
             <div>Welcome! {client.name || client.email}</div>
             <br />
             <div>Your balance is {`${client.balance} ${client.currency}`}</div>
-          </div>
+          </div> */}
         </>
       ) : (
         <div>
-          <button
-            className="btn primary"
-            onClick={() =>
-              popupCenter({
-                url: `https://oauth.deriv.com/oauth2/authorize?app_id=${APP_ID}&l=en&brand=light-trader`,
-                title: LOGIN_POPUP,
-                w: 900,
-                h: 500,
-              })
-            }
-          >
+          <button className="btn primary" onClick={handleLogin}>
             Log In
           </button>
         </div>
