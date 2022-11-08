@@ -10,6 +10,8 @@ const TradeTypes = () => {
 
   const [, setOptionsOpen] = useToggleOptions;
 
+  const trade_options = [];
+
   // Fetch Contracts for symbol
   useEffect(() => {
     if (symbol) {
