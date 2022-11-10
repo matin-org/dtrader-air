@@ -10,6 +10,7 @@ export const DtraderAirProvider = ({ children }) => {
   const [submarket, setSubMarket] = useState(null);
   const [instrument, setInstrument] = useState(null);
   const [accounts, setAccounts] = useState([]);
+  const [selected_acc, setSelectedAcc] = useState([]);
   const [symbol, setSymbol] = useState(null);
   const [is_options_open, setOptionsOpen] = useState(true);
 
@@ -21,6 +22,7 @@ export const DtraderAirProvider = ({ children }) => {
         useSubMarket: [submarket, setSubMarket],
         useInstrument: [instrument, setInstrument],
         useAccounts: [accounts, setAccounts],
+        useSelectedAcc: [selected_acc, setSelectedAcc],
         useSymbol: [symbol, setSymbol],
         useToggleOptions: [is_options_open, setOptionsOpen],
       }}

@@ -15,8 +15,9 @@ const Trade = () => {
   });
 
   const { send } = useDtraderAirWS();
-  const { useAccounts } = React.useContext(DtraderAirStore);
+  const { useAccounts, useSelectedAcc } = React.useContext(DtraderAirStore);
   const [, setAccounts] = useAccounts;
+  const [, setSelectedAcc] = useSelectedAcc;
 
   useEffect(() => {
     if (is_logged_in && token) {
@@ -26,10 +27,10 @@ const Trade = () => {
         },
         (response) => {
           if (response.authorize) {
-            const { fullname, balance, currency, email, account_list } =
-              response.authorize;
-
+            const { account_list } = response.authorize;
+            const { fullname, balance, currency, email } = account_list;
             setAccounts(account_list);
+            setSelectedAcc(account_list[0].loginid);
             setClient({ name: fullname, balance, currency, email });
             setLoading(false);
           }
