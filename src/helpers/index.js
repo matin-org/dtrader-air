@@ -8,6 +8,7 @@ import {
   LOCAL_DATA,
 } from "./contants";
 import { isBrowser, isLocal, popupCenter, isMobile } from "./utilities";
+import { getContractTypesConfig } from "./config";
 
 export {
   APP_ID,
@@ -21,4 +22,5 @@ export {
   isLocal,
   popupCenter,
   isMobile,
+  getContractTypesConfig,
 };

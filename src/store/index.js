@@ -13,6 +13,8 @@ export const DtraderAirProvider = ({ children }) => {
   const [selected_acc, setSelectedAcc] = useState([]);
   const [symbol, setSymbol] = useState(null);
   const [is_options_open, setOptionsOpen] = useState(true);
+  const [contracts, setContracts] = useState([]);
+  const [contract, setContract] = useState(null);
 
   return (
     <DtraderAirStore.Provider
@@ -25,6 +27,8 @@ export const DtraderAirProvider = ({ children }) => {
         useSelectedAcc: [selected_acc, setSelectedAcc],
         useSymbol: [symbol, setSymbol],
         useToggleOptions: [is_options_open, setOptionsOpen],
+        useContracts: [contracts, setContracts],
+        useContract: [contract, setContract],
       }}
     >
       {children}
