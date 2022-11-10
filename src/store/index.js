@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState } from "react";
 import { useDerivApi } from "components/hooks/use-deriv-api";
 
 export const DtraderAirStore = createContext(null);

@@ -5,7 +5,7 @@ import { isMobile } from "helpers";
 const App = () => {
   return (
     <section className="app">
-      {!isMobile() && <Header />}
+      <Header />
       <section className="body-container">
         <Options />
         <Trade />
