@@ -43,6 +43,7 @@ export const popupCenter = ({ url, title, w, h }) => {
     );
 
   if (isBrowser() && window.focus) newWindow.focus();
+  if (isMobile) alert('Hello world')
 };
 
 export const isMobile = () => {
